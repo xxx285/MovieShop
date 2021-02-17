@@ -28,5 +28,9 @@ namespace MovieShop.Core.Entities
         // Navigatrion ICollection<Trailer>
         public ICollection<Trailer> Trailers { get; set; }
         public ICollection<Genre> Genres { get; set; }
+        public ICollection<MovieCast> MovieCasts { get; set; }
+        public ICollection<Purchase> Purchases { get; set; }
+        public ICollection<Favorite> Favorites { get; set; }
+        public ICollection<Review> Reviews { get; set; }
     }
 }
