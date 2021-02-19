@@ -5,7 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MovieShop.Core.Entities;
+using MovieShop.Core.RepositoryInterfaces;
+using MovieShop.Core.ServiceInterfaces;
 using MovieShop.Infrastructure.Data;
+using MovieShop.Infrastructure.Repositories;
+using MovieShop.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +31,15 @@ namespace MovieMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            // Registering our classes for interrfaces to be used across our application
+            //.NET CORE built-int Dependency Injection
+            //.NET Framework does not havev built-in DI, will need download 3rd party packages or IOC, like Ninect, Autofac... 
+            services.AddTransient<IMovieService, MovieService>(); // whenever we see IMovieService as a constructor parameter, will replace that with MovieService Class; change here if we want to pass a new class as parameters
+            services.AddTransient<IMovieRepository, MovieRepository>();
+            
+            services.AddTransient<IGenreService, GenreService>();
+            services.AddTransient<IAsyncRepository<Genre>, EfRepository<Genre>>();
 
             services.AddDbContext<MovieShopDbContext>(option =>
                 option.UseSqlServer(Configuration.GetConnectionString("MovieShopDbConnection")));

@@ -33,6 +33,10 @@ namespace MovieShop.Infrastructure.Data
                    u => u.HasOne<Role>().WithMany().HasForeignKey("UserId"),
                    r => r.HasOne<User>().WithMany().HasForeignKey("RoleId"));
 
+            // inline version of the function
+            //builder.HasOne(mc => mc.Movie).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.MovieId);
+            //builder.HasOne(mc => mc.Cast).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.CastId);
+
             modelBuilder.Entity<Cast>(ConfigureCast);
             modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
             modelBuilder.Entity<Purchase>(ConfigurePurchase);
@@ -105,9 +109,11 @@ namespace MovieShop.Infrastructure.Data
         private void ConfigurePurchase(EntityTypeBuilder<Purchase> builder)
         {
             builder.ToTable("Purchase");
-            builder.HasKey(t => t.Id);
-            builder.Property(t => t.PurchaseNumber).HasColumnType("UniqueIdentifier");
-            builder.Property(t => t.PurchaseDateTime).HasPrecision(7);
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.Id).ValueGeneratedOnAdd();
+            builder.Property(p => p.PurchaseNumber).ValueGeneratedOnAdd();
+            builder.HasIndex(p => new { p.UserId, p.MovieId }).IsUnique(); // a user can't buy a movie twice
+            builder.Property(p => p.PurchaseDateTime).HasPrecision(7);
         }
         // Many DbSet, DbSet are represented as properties for this class
 
@@ -121,7 +127,7 @@ namespace MovieShop.Infrastructure.Data
         {
             builder.ToTable("Review");
             builder.HasKey(t => new { t.MovieId, t.UserId});
-            builder.Property(t => t.Rating).HasPrecision(3, 2);
+            builder.Property(t => t.Rating).HasPrecision(3, 2); // or builder.Property(r => r.Rating).HasColumnType("decimal(3, 2)");
         }
 
         public DbSet<Genre> Genres { get; set; }
