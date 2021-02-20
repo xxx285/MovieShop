@@ -1,0 +1,10 @@
+﻿@model IEnumerable<MovieShop.Core.Models.Response.GenreResponseModel>
+
+@*create a list of dropdown items*@
+
+@foreach (var genre in Model)
+{
+    <a class="dropdown-item" asp-controller="Movies" asp-action="genre" asp-route-id="@genre.Id">
+        @genre.Name
+    </a>
+} 

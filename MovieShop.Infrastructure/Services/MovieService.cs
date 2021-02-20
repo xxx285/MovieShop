@@ -5,6 +5,7 @@ using MovieShop.Core.ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MovieShop.Infrastructure.Services
 {
@@ -17,9 +18,9 @@ namespace MovieShop.Infrastructure.Services
         {
             _movieRepository = movieRepository; 
         }
-        public MovieDetailsResponseModel GetMovieById(int id)
+        public async Task<MovieDetailsResponseModel> GetMovieById(int id)
         {
-            var movie = _movieRepository.GetByIdAsync(id);
+            var movie = await _movieRepository.GetByIdAsync(id);
 
             // map movie entity to MovieDetailsResponseModel
             var movieDetails = new MovieDetailsResponseModel
@@ -73,9 +74,9 @@ namespace MovieShop.Infrastructure.Services
 
             return movieDetails;
         }
-        public IEnumerable<MovieCardResponseModel> GetTop25GrossingMovies()
+        public async Task<IEnumerable<MovieCardResponseModel>> GetTop25GrossingMovies()
         {
-            var movies = _movieRepository.GetTopRevenueMovies();
+            var movies = await _movieRepository.GetTopRevenueMovies();
             var movieCardResponseModel = new List<MovieCardResponseModel>();
             foreach (var movie in movies)
             {

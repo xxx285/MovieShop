@@ -21,10 +21,10 @@ namespace MovieMVC.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             // call the movie service
-            var movieDetails = _movieService.GetMovieById(id);
+            var movieDetails = await _movieService.GetMovieById(id);
             return View(movieDetails);
         }
 
