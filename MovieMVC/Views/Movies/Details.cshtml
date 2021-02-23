@@ -5,7 +5,7 @@
     <div class="card-img-overlay">
         <div class="row">
             <div class="col">
-                <img src="@Model.PosterUrl" alt="@Model.Title" />
+                <img class="img-fluid" src="@Model.PosterUrl" alt="@Model.Title" />
             </div>
             <div class="col">
                 @*movie title and other general information*@
@@ -24,10 +24,12 @@
                 </div>
             </div>
             <div class="col">
-                <button class="btn btn-dark btn-block mt-5 mb-3" type="button">REVIEW</button>
-                <button class="btn btn-dark btn-block mb-3" type="button">TRAILER</button>
-                <button class="btn btn-light btn-block" type="button">BUY</button>
-                <button class="btn btn-light btn-block" type="button">WATCH MOVIE</button>
+                <div style="position:relative; top:15%">
+                    <button class="btn btn-dark btn-block mb-3" type="button">REVIEW</button>
+                    <button class="btn btn-dark btn-block mb-3" type="button">TRAILER</button>
+                    <button class="btn btn-light btn-block" type="button">BUY</button>
+                    <button class="btn btn-light btn-block" type="button">WATCH MOVIE</button>
+                </div>
             </div>
         </div>
     </div>
