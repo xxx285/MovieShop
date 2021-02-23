@@ -26,8 +26,8 @@ namespace MovieShop.Infrastructure.Services
         public string FullName => GetFullName();
         private string GetFullName()
         {
-            var firstName = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
-            var lastName = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname);
+            var firstName = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName).Value;
+            var lastName = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname).Value;
             return firstName + " " + lastName;
         }
         public string Email => throw new NotImplementedException();

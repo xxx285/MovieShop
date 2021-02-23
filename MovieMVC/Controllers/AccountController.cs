@@ -93,5 +93,10 @@ namespace MovieMVC.Controllers
             }
             return View();
         }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(); // this line deletes the cookie
+            return RedirectToAction("Login");
+        }
     }
 }

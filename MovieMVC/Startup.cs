@@ -45,6 +45,7 @@ namespace MovieMVC
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICryptoService, CryptoService>();
+            services.AddTransient<ICurrentLogedInUser, CurrentLogedInUser>();
 
             services.AddDbContext<MovieShopDbContext>(option =>
                 option.UseSqlServer(Configuration.GetConnectionString("MovieShopDbConnection")));
