@@ -17,7 +17,7 @@ namespace MovieMVC.Views.Shared.Components.Genres
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var genres = await _genreService.GetAllGenres();
-            // by conention it will look for a view name Default.cshtml
+            // by default it will look for a view name Default.cshtml
             return View(genres);
         }
     }

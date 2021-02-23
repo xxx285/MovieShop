@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MovieShop.Core.Models.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +10,20 @@ namespace MovieMVC.Controllers
     public class AccountController : Controller
     {
         [HttpGet]
-        public IActionResult Details(int id) {
+        public async Task<IActionResult> Register()
+        {
+
             return View();
         }
-
         [HttpPost]
-        public IActionResult Create()
+        public async Task<IActionResult> Register(UserRegisterRequestModel requestModel)
         {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Login()
-        {
+            // Model Binding
+            if(!ModelState.IsValid) // a single validation's failing will invalidate the model status
+            {
+                // do something when validation failed
+            }
+            // send data to the DB
             return View();
         }
     }

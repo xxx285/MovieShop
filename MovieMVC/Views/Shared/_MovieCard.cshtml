@@ -1,8 +1,8 @@
-﻿@*@model MovieShop.Core.Models.Response.MovieCardResponseModel*@
-
+﻿@* this line is to get intellisense feature*@
+@model MovieShop.Core.Models.Response.MovieCardResponseModel
 @*when u click on the poster go to MovieController, Details action method and send movie id*@
 <div class="card mb-4 shadow bg-light">
     <a asp-controller="Movies" asp-action="Details" asp-route-id="@Model.Id">
-        <img src="@Model.PosterUrl" alt="@Model.Title" class="img-fluid"/>
+        <img src="@Model.PosterUrl" alt="@Model.Title" class="img-fluid" />
     </a>
 </div>
