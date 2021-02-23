@@ -51,10 +51,11 @@ namespace MovieMVC.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.GivenName, user.FirstName),
+                new Claim(ClaimTypes.Surname, user.LastName),
                 new Claim(ClaimTypes.DateOfBirth, user.DateOfBirth.Value.ToShortDateString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
-            // sign
+            // sign the cookie card
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             // create a cookie
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
