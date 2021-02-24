@@ -1,4 +1,4 @@
-﻿@*<img src="@Model.BackdropUrl" alt="@Model.Title background" *@
+﻿@*@model MovieShop.Core.Models.Response.MovieDetailsResponseModel*@
 
 <div class="card text-white" style="margin-bottom:20px">
     <img src="@Model.BackdropUrl" alt="@Model.Title background"class="card-img" style=" filter: brightness(20%);">
@@ -25,9 +25,9 @@
             </div>
             <div class="col">
                 <div style="position:relative; top:15%">
-                    <button class="btn btn-dark btn-block mb-3" type="button">REVIEW</button>
+                    <a asp-controller="User" asp-action="Review" asp-route-id="@Model.Id" class="btn btn-dark btn-block mb-3" type="button">REVIEW</a>
                     <button class="btn btn-dark btn-block mb-3" type="button">TRAILER</button>
-                    <button class="btn btn-light btn-block" type="button">BUY</button>
+                    <a asp-controller="User" asp-action="Buy" asp-route-id="@Model.Id" class="btn btn-light btn-block">BUY</a>
                     <button class="btn btn-light btn-block" type="button">WATCH MOVIE</button>
                 </div>
             </div>

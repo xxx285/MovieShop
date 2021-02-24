@@ -18,6 +18,20 @@ namespace MovieShop.Infrastructure.Services
         {
             _movieRepository = movieRepository; 
         }
+
+        public async Task<MovieSummaryResponseModel> GetMovieSummaryById(int id)
+        {
+            var movie = await _movieRepository.GetByIdAsync(id);
+            var movieBuy = new MovieSummaryResponseModel
+            {
+                Id = movie.Id,
+                PosterUrl = movie.PosterUrl,
+                Price = movie.Price,
+                Title = movie.Title
+            };
+            return movieBuy;
+        }
+
         public async Task<MovieDetailsResponseModel> GetMovieById(int id)
         {
             var movie = await _movieRepository.GetByIdAsync(id);

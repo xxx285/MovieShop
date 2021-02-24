@@ -43,6 +43,8 @@ namespace MovieMVC
             services.AddTransient<IAsyncRepository<Genre>, EfRepository<Genre>>();
 
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IPurchaseRepository, PurchaseRepository>();
+            services.AddTransient<IReviewRepository, ReviewRepository>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICryptoService, CryptoService>();
             services.AddTransient<ICurrentLogedInUser, CurrentLogedInUser>();

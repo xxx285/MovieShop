@@ -66,7 +66,6 @@ namespace MovieMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Register()
         {
-
             return View();
         }
         [HttpPost]

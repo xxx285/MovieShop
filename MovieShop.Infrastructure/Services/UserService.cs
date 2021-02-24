@@ -14,12 +14,37 @@ namespace MovieShop.Infrastructure.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMovieRepository _movieRepository;
+        private readonly IPurchaseRepository _purchaseRepository;
         private readonly ICryptoService _cryptoService;
-        public UserService(IUserRepository userRepository, ICryptoService cryptoService)
+        private readonly IReviewRepository _reviewRepository;
+        public UserService(IUserRepository userRepository, ICryptoService cryptoService, IMovieRepository movieRepository,
+            IPurchaseRepository purchaseRepository, IReviewRepository reviewRepository)
         {
             _userRepository = userRepository;
+            _movieRepository = movieRepository;
             _cryptoService = cryptoService;
+            _purchaseRepository = purchaseRepository;
+            _reviewRepository = reviewRepository;
         }
+
+        public async Task<bool> PurchaseMovie(int userId, int movieId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            var movie = await _movieRepository.GetByIdAsync(movieId);
+            var purchase = new Purchase
+            {
+                MovieId = movie.Id,
+                UserId = user.Id,
+                TotalPrice = (decimal)movie.Price,
+                PurchaseDateTime = DateTime.Now,
+                PurchaseNumber = Guid.NewGuid()
+            };
+            
+            var createdPurchase = await _purchaseRepository.AddAsync(purchase);
+            return createdPurchase != null;
+        }
+
         public async Task<bool> RegisterUser(UserRegisterRequestModel userRegisterRequestModel)
         {
             // we need to check whether that email exists or not
@@ -49,6 +74,19 @@ namespace MovieShop.Infrastructure.Services
             return false;
         }
 
+        public async Task<bool> ReviewMovie(ReviewRequestModel reviewRequestModel, int userId, int movieId)
+        {
+            var newReview = new Review
+            {
+                MovieId = movieId,
+                UserId = userId,
+                ReviewText = reviewRequestModel.ReviewText,
+                Rating = reviewRequestModel.Rating
+            };
+            var result = await _reviewRepository.AddAsync(newReview);
+            return result != null;
+        }
+
         public async Task<LoginResponseModel> ValidateUser(LoginRequestModel loginRequestModel)
         {
             var dbUser = await _userRepository.GetUserByEmail(loginRequestModel.Email);
@@ -66,7 +104,7 @@ namespace MovieShop.Infrastructure.Services
                     Email = dbUser.Email,
                     FirstName = dbUser.FirstName,
                     LastName = dbUser.LastName,
-                    DateOfBirth = dbUser.DateOfBirth
+                    DateOfBirth = dbUser.DateOfBirth // DateTime cannot be convert to DateTime? implicitly but DateTime? can be convert to DateTime 
                 };
                 return loginResponse;
             }
