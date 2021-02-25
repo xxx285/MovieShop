@@ -1,4 +1,6 @@
 ﻿@model MovieShop.Core.Models.Response.MovieSummaryResponseModel
+@using MovieShop.Core.ServiceInterfaces
+@inject ICurrentLogedInUser CurrentLogedInUser
 
 <h3>
     Buy Movie
@@ -6,22 +8,28 @@
 
 <hr />
 
-<div class="row justify-content-center">
-    <div class="col-md-4">
-        <div class="card">
-            <img src="@Model.PosterUrl" alt="@Model.Title" class="card-img-top" />
-            <div class="card-body">
-                <div class="d-flex justify-content-center">
-                    <h4 class="card-title">@Model.Title</h4>
-                </div>
-                <div class="d-flex justify-content-center mb-4">
-                    <h5 class="card-title bg-warning rounded-pill p-1">$@Model.Price</h5>
-                </div>
-                <div class="d-flex justify-content-around">
-                    <a asp-controller="User" asp-action="Purchase" asp-route-id="@Model.Id" class="btn btn-primary">Confirm</a>
-                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Cancel</a>
+<form asp-controller="User" asp-action="Buy">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="@Model.PosterUrl" alt="@Model.Title" class="card-img-top" />
+                <div class="card-body">
+                    <div class="d-flex justify-content-center">
+                        <h4 class="card-title">@Model.Title</h4>
+                    </div>
+                    <div class="d-flex justify-content-center mb-4">
+                        <h5 class="card-title bg-warning rounded-pill p-1">$@Model.Price</h5>
+                    </div>
+                    <div class="d-flex justify-content-around">
+                        <input type="hidden" value="@Model.Id" name="MovieId" />
+                        <input type="hidden" value="@CurrentLogedInUser.UserId" name="UserId" />
+                        <input type="hidden" value="@Model.Price" , name="Price" />
+                        @*<a asp-controller="User" asp-action="Purchase" asp-route-id="@Model.Id" class="btn btn-primary">Confirm</a>*@
+                        <input type="submit" class="btn btn-primary" value="Confirm" />
+                        <a asp-controller="Movies" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Cancel</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</form>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieShop.Core.Models.Request;
 using MovieShop.Core.ServiceInterfaces;
@@ -25,27 +26,33 @@ namespace MovieMVC.Controllers
         }
         
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Buy(int id)
         {
-            if (_currentLogedInUser.IsAuthenticated)
-            {
-                var movieBuy = await _movieService.GetMovieSummaryById(id);
-                return View(movieBuy);
-            }
-            else
-            {
-                return LocalRedirect(Url.Content("~/account/login"));
-            }
+            var movieBuy = await _movieService.GetMovieSummaryById(id);
+            return View(movieBuy);
+
+            // the filter [Authorize] would transform the code below int to the 2-line code above
+            //if (_currentLogedInUser.IsAuthenticated)
+            //{
+            //    var movieBuy = await _movieService.GetMovieSummaryById(id);
+            //    return View(movieBuy);
+            //}
+            //else
+            //{
+            //    return LocalRedirect(Url.Content("~/account/login"));
+            //}
         }
 
-        [HttpGet]
+        [HttpPost]
+        [Authorize]
         // call UserService to save this movie, which is calling UserRepository that will save it to the purchase table
-        public async Task<IActionResult> Purchase(int id)
+        public async Task<IActionResult> Buy(PurchaseRequestModel purchaseRequestModel)
         {
             try
             {
-                int userId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-                bool result = await _userService.PurchaseMovie(userId, id);
+                int userId = _currentLogedInUser.UserId;
+                bool result = await _userService.PurchaseMovie(purchaseRequestModel);
                 if (result)
                     return View("PurchaseSuccess");
                 return View("PurchaseFail");
@@ -57,28 +64,37 @@ namespace MovieMVC.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Review(int id)
         {
-            if (_currentLogedInUser.IsAuthenticated)
-            {
-                var movieSummary = await _movieService.GetMovieSummaryById(id);
-                ViewBag.PosterUrl = movieSummary.PosterUrl;
-                ViewBag.Title = movieSummary.Title;
-                ViewBag.Id = movieSummary.Id;
-                return View();
-            }
-            else
-            {
-                return LocalRedirect(Url.Content("~/account/login"));
-            }
+            var movieSummary = await _movieService.GetMovieSummaryById(id);
+            ViewBag.PosterUrl = movieSummary.PosterUrl;
+            ViewBag.Title = movieSummary.Title;
+            ViewBag.Id = movieSummary.Id;
+            return View();
+
+            // the filter [Authorize] would transform the code below int to the 2-line code above
+            //if (_currentLogedInUser.IsAuthenticated)
+            //{
+            //    var movieSummary = await _movieService.GetMovieSummaryById(id);
+            //    ViewBag.PosterUrl = movieSummary.PosterUrl;
+            //    ViewBag.Title = movieSummary.Title;
+            //    ViewBag.Id = movieSummary.Id;
+            //    return View();
+            //}
+            //else
+            //{
+            //    return LocalRedirect(Url.Content("~/account/login"));
+            //}
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Review(ReviewRequestModel reviewRequestModel, int movieId)
         {
             try
             {
-                int userId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+                int userId = _currentLogedInUser.UserId;
                 bool result = await _userService.ReviewMovie(reviewRequestModel, userId, movieId);
                 if (result)
                     return View("ReviewSuccess");

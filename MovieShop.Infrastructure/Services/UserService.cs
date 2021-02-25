@@ -28,15 +28,13 @@ namespace MovieShop.Infrastructure.Services
             _reviewRepository = reviewRepository;
         }
 
-        public async Task<bool> PurchaseMovie(int userId, int movieId)
+        public async Task<bool> PurchaseMovie(PurchaseRequestModel purchaseRequestModel)
         {
-            var user = await _userRepository.GetByIdAsync(userId);
-            var movie = await _movieRepository.GetByIdAsync(movieId);
             var purchase = new Purchase
             {
-                MovieId = movie.Id,
-                UserId = user.Id,
-                TotalPrice = (decimal)movie.Price,
+                MovieId = purchaseRequestModel.MovieId,
+                UserId = purchaseRequestModel.UserId,
+                TotalPrice = purchaseRequestModel.Price,
                 PurchaseDateTime = DateTime.Now,
                 PurchaseNumber = Guid.NewGuid()
             };
