@@ -105,5 +105,78 @@ namespace MovieShop.Infrastructure.Services
             }
             return movieCardResponseModel;
         }
+
+        public async Task<IEnumerable<MovieCardResponseModel>> GetTop25RatedMovies()
+        {
+            var movies = await _movieRepository.GetTopRatedMovies();
+            var movieCardResponseModel = new List<MovieCardResponseModel>();
+            foreach (var movie in movies)
+            {
+                var movieCard = new MovieCardResponseModel
+                {
+                    Id = movie.Id,
+                    PosterUrl = movie.PosterUrl,
+                    Revenue = movie.Revenue,
+                    Title = movie.Title
+                };
+                movieCardResponseModel.Add(movieCard);
+            }
+            return movieCardResponseModel;
+        }
+
+        public async Task<IEnumerable<MovieCardResponseModel>> GetMoviesByGenre(int genreId, int pageSize = 25, int page = 1)
+        {
+            var movies = await _movieRepository.GetMoviesByGenre(genreId, pageSize, page);
+            var movieModels = new List<MovieCardResponseModel>();
+            foreach (var movie in movies)
+            {
+                var curModel = new MovieCardResponseModel
+                {
+                    Id = movie.Id,
+                    PosterUrl = movie.PosterUrl,
+                    Revenue = movie.Revenue,
+                    Title = movie.Title
+                };
+                movieModels.Add(curModel);
+            }
+            return movieModels;
+        }
+
+        public async Task<IEnumerable<MovieCardResponseModel>> GetMoviesByPage(int pageSize, int page)
+        {
+            var movies = await _movieRepository.GetMoviesByPage(pageSize, page);
+            var movieModels = new List<MovieCardResponseModel>();
+            foreach (var movie in movies)
+            {
+                var curModel = new MovieCardResponseModel
+                {
+                    Id = movie.Id,
+                    PosterUrl = movie.PosterUrl,
+                    Revenue = movie.Revenue,
+                    Title = movie.Title
+                };
+                movieModels.Add(curModel);
+            }
+            return movieModels;
+        }
+
+        public async Task<IEnumerable<ReviewResponseModel>> GetReviewsForMovie(int id)
+        {
+            var reviews = await _movieRepository.GetReviewsForMovie(id);
+            var viewModels = new List<ReviewResponseModel>();
+            foreach(var r in reviews)
+            {
+                ReviewResponseModel cur = new ReviewResponseModel
+                {
+                    MovieId = r.MovieId,
+                    UserId = r.UserId,
+                    ReviewText = r.ReviewText,
+                    Rating = r.Rating,
+                    UserName = r.User.FirstName + " " + r.User.LastName
+                };
+                viewModels.Add(cur);
+            }
+            return viewModels;
+        }
     }
 }

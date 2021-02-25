@@ -20,6 +20,7 @@ namespace MovieShop.API.Controllers
         }
 
         [HttpPost]
+        [Route("")] // this line can be ommited
         public async Task<ActionResult> RegisterUserAsync([FromBody] UserRegisterRequestModel user)
         {
             var createdUser = await _userService.RegisterUser(user); // if the validation failed, it won't come here
@@ -30,5 +31,10 @@ namespace MovieShop.API.Controllers
             else
                 return StatusCode(500, "fail");
         }
+
+        //public async Task<ActionResult> LoginAsync([FromBody] LoginRequestModel)
+        //{
+        //    var login = await _userService.
+        //}
     }
 }

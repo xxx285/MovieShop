@@ -100,7 +100,7 @@ namespace MovieMVC.Controllers
                     return View("ReviewSuccess");
                 return View("ReviewFail");
             }
-            catch
+            catch(Exception e)
             {
                 return View("ReviewFail");
             }
