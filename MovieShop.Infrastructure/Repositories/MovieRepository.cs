@@ -17,11 +17,14 @@ namespace MovieShop.Infrastructure.Repositories
         }
         public async Task<IEnumerable<Movie>> GetTopRatedMovies()
         {
+            //var movieIds = await _dbContext.Reviews.GroupBy(r => r.MovieId)
+            //    .Select(r => new {
+            //        MovieId = r.Key,
+            //        AverageRating = r.Sum(x => x.Rating) / r.Count()
+            //    }).OrderByDescending(x => x.AverageRating).Select(x => x.MovieId).Take(25).ToListAsync();
+
             var movieIds = await _dbContext.Reviews.GroupBy(r => r.MovieId)
-                .Select(r => new {
-                    MovieId = r.Key,
-                    AverageRating = r.Sum(x => x.Rating) / r.Count()
-                }).OrderByDescending(x => x.AverageRating).Select(x => x.MovieId).Take(25).ToListAsync();
+                .OrderByDescending(x => x.Average(r => r.Rating)).Select(x => x.Key).Take(25).ToListAsync();
 
             // kinda like subquery
             var movies = new List<Movie>();

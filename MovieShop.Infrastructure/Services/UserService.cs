@@ -28,6 +28,36 @@ namespace MovieShop.Infrastructure.Services
             _reviewRepository = reviewRepository;
         }
 
+        public async Task<UserRegisterResponseModel> GetUserByEmail(string email)
+        {
+            var user = await _userRepository.GetUserByEmail(email);
+            if (user == null)
+                return null;
+            var cur = new UserRegisterResponseModel
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.Id
+            };
+            return cur;
+        }
+
+        public async Task<UserRegisterResponseModel> GetUserById(int id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user == null)
+                return null;
+            var cur = new UserRegisterResponseModel
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.Id
+            };
+            return cur;
+        }
+
         public async Task<bool> PurchaseMovie(PurchaseRequestModel purchaseRequestModel)
         {
             var purchase = new Purchase
@@ -43,7 +73,7 @@ namespace MovieShop.Infrastructure.Services
             return createdPurchase != null;
         }
 
-        public async Task<bool> RegisterUser(UserRegisterRequestModel userRegisterRequestModel)
+        public async Task<UserRegisterResponseModel> RegisterUser(UserRegisterRequestModel userRegisterRequestModel)
         {
             // we need to check whether that email exists or not
             var dbUser = await _userRepository.GetUserByEmail(userRegisterRequestModel.Email);
@@ -67,9 +97,16 @@ namespace MovieShop.Infrastructure.Services
             var createdUser = await _userRepository.AddAsync(user);
             if (createdUser != null && createdUser.Id > 0)
             {
-                return true;
+                var userRegisterResponseModel = new UserRegisterResponseModel
+                {
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Id = user.Id
+                };
+                return userRegisterResponseModel;
             }
-            return false;
+            return null;
         }
 
         public async Task<bool> ReviewMovie(ReviewRequestModel reviewRequestModel, int userId, int movieId)

@@ -42,7 +42,7 @@ namespace MovieMVC.Controllers
                 ModelState.AddModelError(string.Empty, "Please check username and password");
                 return View();
             }
-            // if un/pw is success
+            // if username/password is success
             // Cookie based Authentication
             // Create a cookie with some information such that id, firstname, lastname, roles etc. CLAIMS
             // that information should not be in plain text, it should be encrypted
@@ -86,7 +86,7 @@ namespace MovieMVC.Controllers
             // only when every validaiton passes make sure you save to database
             // call our User Service to save to Db
             var createdUser = await _userService.RegisterUser(requestModel);
-            if (createdUser)
+            if (createdUser != null)
             {
                 return RedirectToAction("Login");
             }
