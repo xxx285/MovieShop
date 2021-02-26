@@ -133,13 +133,22 @@ namespace MovieShop.Infrastructure.Services
             if (hashedPassword == dbUser.HashedPassword)
             {
                 // User has entered correct password
+                var roleResponseModels = new List<RoleResponseModel>();
+                foreach(var r in dbUser.Roles)
+                {
+                    var cur = new RoleResponseModel();
+                    cur.Id = r.Id;
+                    cur.Name = r.Name;
+                    roleResponseModels.Add(cur);
+                }
                 var loginResponse = new LoginResponseModel
                 {
                     Id = dbUser.Id,
                     Email = dbUser.Email,
                     FirstName = dbUser.FirstName,
                     LastName = dbUser.LastName,
-                    DateOfBirth = dbUser.DateOfBirth // DateTime cannot be convert to DateTime? implicitly but DateTime? can be convert to DateTime 
+                    DateOfBirth = dbUser.DateOfBirth, // DateTime cannot be convert to DateTime? implicitly but DateTime? can be convert to DateTime 
+                    Roles = roleResponseModels
                 };
                 return loginResponse;
             }

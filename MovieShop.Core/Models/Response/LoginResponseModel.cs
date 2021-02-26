@@ -12,12 +12,6 @@ namespace MovieShop.Core.Models.Response
         public string LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
 
-        public List<RoleModel> Roles { get; set; }
-    }
-
-    public class RoleModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public List<RoleResponseModel> Roles { get; set; }
     }
 }

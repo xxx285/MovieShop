@@ -30,8 +30,8 @@ namespace MovieShop.Infrastructure.Data
 
             modelBuilder.Entity<User>().HasMany(u => u.Roles).WithMany(r => r.Users)
                .UsingEntity<Dictionary<string, object>>("UserRole",
-                   u => u.HasOne<Role>().WithMany().HasForeignKey("UserId"),
-                   r => r.HasOne<User>().WithMany().HasForeignKey("RoleId"));
+                   u => u.HasOne<Role>().WithMany().HasForeignKey("RoleId"),
+                   r => r.HasOne<User>().WithMany().HasForeignKey("UserId"));
 
             // inline version of the function
             //builder.HasOne(mc => mc.Movie).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.MovieId);

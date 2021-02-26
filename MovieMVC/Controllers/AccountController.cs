@@ -47,6 +47,7 @@ namespace MovieMVC.Controllers
             // Create a cookie with some information such that id, firstname, lastname, roles etc. CLAIMS
             // that information should not be in plain text, it should be encrypted
             // send this loginRequest to the UserService that will validate the un/pw
+            var roleString = user.Roles.ToString();
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Email),
@@ -55,6 +56,10 @@ namespace MovieMVC.Controllers
                 new Claim(ClaimTypes.DateOfBirth, user.DateOfBirth.Value.ToShortDateString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
+
+            // AddRange is adding a list to the end of another list
+            if (user.Roles != null) claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
+
             // sign the cookie card
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             // create a cookie

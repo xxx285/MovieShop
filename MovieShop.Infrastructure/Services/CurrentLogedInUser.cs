@@ -31,9 +31,30 @@ namespace MovieShop.Infrastructure.Services
             return firstName + " " + lastName;
         }
         public string Email => throw new NotImplementedException();
-        public List<string> Roles => throw new NotImplementedException();
-        public bool IsAdmin => throw new NotImplementedException();
-        public bool IsSuperAdmin => throw new NotImplementedException();
+        public List<string> Roles => GetRoles();
+        private List<string> GetRoles()
+        {
+            var claims = _httpContextAccessor.HttpContext?.User.Claims;
+            var roles = new List<string>();
+            foreach(var claim in claims)
+            {
+                if (claim.Type == ClaimTypes.Role)
+                    roles.Add(claim.Value);
+            }
+            return roles;
+        }
+        public bool IsAdmin => GetIsAdmin();
+        private bool GetIsAdmin()
+        {
+            var roles = Roles;
+            return roles.Any(r => r == "Admin");
+        }
+        public bool IsSuperAdmin => GetIsSuperAdmin();
+        private bool GetIsSuperAdmin()
+        {
+            var roles = Roles;
+            return roles.Any(r => r == "SuperAdmin");
+        }
         public int UserId => GetUserId();
         private int GetUserId()
         {

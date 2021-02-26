@@ -1,0 +1,107 @@
+﻿@model MovieShop.Core.Models.Request.MovieCreateRequestModel
+@inject MovieShop.Core.ServiceInterfaces.IGenreService GenreService
+
+<h3>Create Movie</h3>
+
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <form asp-action="CreateMovie">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Overview"></label>
+                <input asp-for="Overview" class="form-control" />
+                <span asp-validation-for="Overview" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tagline"></label>
+                <input asp-for="Tagline" class="form-control" />
+                <span asp-validation-for="Tagline" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Revenue"></label>
+                <input asp-for="Revenue" class="form-control" />
+                <span asp-validation-for="Revenue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Budget"></label>
+                <input asp-for="Budget" class="form-control" />
+                <span asp-validation-for="Budget" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImdbUrl"></label>
+                <input asp-for="ImdbUrl" class="form-control" />
+                <span asp-validation-for="ImdbUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TmdbUrl"></label>
+                <input asp-for="TmdbUrl" class="form-control" />
+                <span asp-validation-for="TmdbUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PosterUrl"></label>
+                <input asp-for="PosterUrl" class="form-control" />
+                <span asp-validation-for="PosterUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BackdropUrl"></label>
+                <input asp-for="BackdropUrl" class="form-control" />
+                <span asp-validation-for="BackdropUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OriginalLanguage"></label>
+                <input asp-for="OriginalLanguage" class="form-control" />
+                <span asp-validation-for="OriginalLanguage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReleaseDate"></label>
+                <input asp-for="ReleaseDate" class="form-control" />
+                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RunTime"></label>
+                <input asp-for="RunTime" class="form-control" />
+                <span asp-validation-for="RunTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <p> Genres </p>
+                @{var allGenres = await GenreService.GetAllGenres();}
+                @for (int i = 0; i < allGenres.Count(); i++)
+                {
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Genres[i].Checked" />
+                    @*<input class="form-check-input" type="checkbox" name="Genres[@i].Checked" value="true"/>*@ @*setting the value attribute to true is very important. It means:The string to use as the value of the checkbox when submitting the form, if the checkbox is currently toggled on*@
+                    @{ var forName = "Genres_" + i + "__Checked";}
+                    <label class="form-check-label" for="@forName">@allGenres.ElementAt(i).Name</label>
+                    <input type="hidden" asp-for="Genres[i].Name" value="@allGenres.ElementAt(i).Name" />
+                    @*<input type="hidden" name="Genres[@i].Name" value="@allGenres.ElementAt(i).Name" />*@ @*both way work*@
+                    <input type="hidden" asp-for="Genres[i].Id" value="@allGenres.ElementAt(i).Id" />
+                </div>
+                }
+            </div>
+            <div class="form-group">
+                <button type="submit" value="CreateMovie" class="btn btn-primary">
+                    Create Movie
+                </button>
+                <a class="btn btn-primary text-white">
+                    Back
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
