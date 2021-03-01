@@ -82,7 +82,7 @@
                 <div class="form-check">
                     <input class="form-check-input" asp-for="Genres[i].Checked" />
                     @*<input class="form-check-input" type="checkbox" name="Genres[@i].Checked" value="true"/>*@ @*setting the value attribute to true is very important. It means:The string to use as the value of the checkbox when submitting the form, if the checkbox is currently toggled on*@
-                    @{ var forName = "Genres_" + i + "__Checked";}
+                    @{ var forName = "Genres_" + i + "__Checked";} @*check genreated html page for this*@ 
                     <label class="form-check-label" for="@forName">@allGenres.ElementAt(i).Name</label>
                     <input type="hidden" asp-for="Genres[i].Name" value="@allGenres.ElementAt(i).Name" />
                     @*<input type="hidden" name="Genres[@i].Name" value="@allGenres.ElementAt(i).Name" />*@ @*both way work*@
